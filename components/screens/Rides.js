@@ -2,8 +2,9 @@ var React = require('react-native');
 var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 
-var RideCell = require('./RideCell')
+var RideCell = require('./RideCell');
 var Profile = require('./Profile');
+var RideDetail = require('./RideDetail');
 
 var Form = t.form.Form;
 var {
@@ -19,8 +20,8 @@ var {
 
 
 class Explore extends ParseComponent {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
     this.state = {
     };
     this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -33,7 +34,11 @@ class Explore extends ParseComponent {
   }
 
   selectRide(ride) {
-    alert('select ride');
+    this.props.navigator.push({
+      title: ride.name,
+      component: RideDetail,
+      passProps: { ride: ride }
+    });
   }
 
   render() {
@@ -86,7 +91,13 @@ class MainRides extends React.Component {
               selectedTab: 'explore',
             });
           }}>
-          {this._renderRides()}
+          <NavigatorIOS
+            style={styles.container}
+            itemWrapperStyle={styles.navContainer}
+            initialRoute={{
+              title: 'Rides',
+              component: Explore,
+            }}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           systemIcon="favorites"
@@ -123,6 +134,12 @@ var styles = StyleSheet.create({
     color: 'white',
     margin: 50,
   },
+  navContainer: {
+    paddingTop: 64,
+  },
+  container: {
+    flex: 1,
+  }
 });
 
 
