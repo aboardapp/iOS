@@ -1,0 +1,17 @@
+{
+  "name": "aboard",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh --assetRoots=./iOS/Images.xcassets"
+  },
+  "dependencies": {
+    "parse": "^1.4.2",
+    "parse-react": "^0.4.1",
+    "react-native": "^0.6.0",
+    "react-native-facebook-login": "0.5.0",
+    "tcomb": "^1.0.3",
+    "tcomb-form-native": "^0.2.2",
+    "tcomb-validation": "^1.0.4"
+  }
+}

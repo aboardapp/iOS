@@ -1,0 +1,5 @@
+module.exports = {
+	PARSE_APP_ID: "N2I8pYbvA0IMYR5LGQqERgwbzZhr26KJO4mkixwK",
+	PARSE_REST_KEY: "QMBwY6Aob6JQEPrpvjXOe4RwSB5wd7lIELfiy32s",
+	PARSE_CLIENT_KEY: "NWrqansybB1SrkUV1FBqstx87LrJGQHG6DBX9xin"
+}
