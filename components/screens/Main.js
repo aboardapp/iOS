@@ -45,28 +45,13 @@ class Main extends React.Component {
     user.set("phone", this.userValue.phone);
     user.set("validated", true);
     user.save();
-    // this.setState(this.state);
-    this.showMainPage();
-  }
-
-  showMainPage() {
-    this.refs.nav.replace({
-      title: 'Rides',
-      component: RidesScreen,
-      passProps: {user:this.props.user},
-    });
+    this.setState(this.state);
   }
 
   render () {
     var validated = !!this.props.user.get('validated');
-    validated = false;
     return (
       validated?<RidesScreen user={this.props.user} />:
-      <Profile user={this.props.user} onChange={this.onChangeForm.bind(this)} />
-    );
-  }
-  render() {
-    return (
       <NavigatorIOS
         ref="nav"
         style={styles.container}
@@ -81,6 +66,7 @@ class Main extends React.Component {
       />
     );
   }
+
       // <NavigatorIOS
       //   ref="nav"
       //   style={styles.container}
