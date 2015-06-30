@@ -21,7 +21,6 @@ var {
 
 class Login extends React.Component {
   handleLogin(data) {
-    console.log("Logged in!");
     var {credentials} = data;
     console.log(credentials);
     this.setState({ user : data.credentials });
@@ -50,6 +49,7 @@ class Login extends React.Component {
       }
     });
   }
+
   render () {
     var _this = this;
     return (

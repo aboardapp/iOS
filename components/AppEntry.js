@@ -25,15 +25,11 @@ class AppEntry extends React.Component {
       user: null
     };
   }
+
   onLogin(user) {
-    console.log('ONLOGIN');
     this.setState({user:user});
-    // this.props.navigator.replace({
-    //   title: 'Rides',
-    //   component: RidesScreen,
-    //   passProps: {user},
-    // });
   }
+
   render () {
     return (
       this.state.user?

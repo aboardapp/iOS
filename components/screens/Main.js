@@ -20,11 +20,13 @@ class Main extends React.Component {
       user: null
     };
   }
+
   onChangeForm(value, validated) {
     console.log('change form', value, validated);
     this.userValue = value;
     this.validated = validated;
   }
+
   onSave() {
     if (!this.validated) {
       AlertIOS.alert(
@@ -66,20 +68,6 @@ class Main extends React.Component {
       />
     );
   }
-
-      // <NavigatorIOS
-      //   ref="nav"
-      //   style={styles.container}
-      //   itemWrapperStyle={styles.allPages}
-      //   initialRoute={{
-      //     title: 'Sign Up',
-      //     component: Signup,
-      //     rightButtonTitle: 'Save',
-      //     onRightButtonPress: this.onSave.bind(this),
-      //     passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this) }
-      //   }}
-      // />
-
 };
 
 var styles = StyleSheet.create({

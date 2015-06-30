@@ -22,6 +22,7 @@ class Explore extends React.Component {
       presses: 0,
     };
   }
+
   render() {
     return (<Text>Rides</Text>);
   }

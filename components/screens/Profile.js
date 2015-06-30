@@ -14,9 +14,9 @@ var {
 } = React;
 
 var Person = t.struct({
-  name: t.Str,              // a required string
-  email: t.Str,              // a required string
-  phone: t.Num,  // an optional string
+  name: t.Str,
+  email: t.Str,
+  phone: t.Num,
 });
 
 class Profile extends React.Component {
@@ -61,9 +61,10 @@ class Profile extends React.Component {
 
   preloadFacebookData(user) {
     var {access_token, id} = user.get('authData').facebook;
+
     var api = `https://graph.facebook.com/v2.3/${id}?fields=name,email&access_token=${access_token}`;
     // var picture = `https://graph.facebook.com/${id}/picture?width=100&height=100&access_token=${access_token}`;
-    console.log('FETCH facebook DATA')
+
     fetch(api)
       .then((response) => response.json())
       .then((responseData) => {
@@ -74,6 +75,7 @@ class Profile extends React.Component {
       })
       .done();
   }
+
   onChange(value) {
     this.setState({value});
     this.refreshValue();
@@ -91,7 +93,8 @@ class Profile extends React.Component {
 
   render() {
     var photo = this.state.photo;
-    return (<View style={styles.container2}>
+    return (
+      <View style={styles.container2}>
         <Image
           style={photo &&
             {
@@ -101,14 +104,14 @@ class Profile extends React.Component {
           }
           source={{uri: photo && photo.url}}
         />
-      <Form
-        ref="form"
-        type={Person}
-        value={this.state.value}
-        onChange={this.onChange.bind(this)}
-      />
-
-    </View>);
+        <Form
+          ref="form"
+          type={Person}
+          value={this.state.value}
+          onChange={this.onChange.bind(this)}
+        />
+      </View>
+    );
   }
 }
 
