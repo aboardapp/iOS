@@ -115,6 +115,67 @@ class Profile extends React.Component {
   }
 }
 
+
+class ProfileScreen extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      user: null
+    };
+  }
+
+  onChangeForm(value, validated) {
+    console.log('change form', value, validated);
+    this.userValue = value;
+    this.validated = validated;
+  }
+
+  onSave() {
+    if (!this.validated) {
+      AlertIOS.alert(
+        'Aboard',
+        'You only can save once the data is validated',
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('Tapped OK'),
+          },
+        ]
+      );
+      return;
+    }
+    let user = this.props.user;
+    user.set("name", this.userValue.name);
+    user.set("email", this.userValue.email);
+    user.set("phone", this.userValue.phone);
+    user.set("signed", true);
+    user.save();
+    this.props.onSave && this.props.onSave();
+  }
+
+  isUserSigned() {
+    return !!this.props.user.get('signed');
+  }
+
+  render () {
+    let signed = this.isUserSigned();
+    return (
+      <NavigatorIOS
+        ref="nav"
+        style={styles.container}
+        itemWrapperStyle={styles.allPages}
+        initialRoute={{
+          title: signed?'Your profile':'Sign Up',
+          component: Profile,
+          rightButtonTitle: 'Save',
+          onRightButtonPress: this.onSave.bind(this),
+          passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this) }
+        }}
+      />
+    );
+  }
+};
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -135,4 +196,4 @@ var styles = StyleSheet.create({
   },});
 
 
-module.exports = Profile;
+module.exports = ProfileScreen;

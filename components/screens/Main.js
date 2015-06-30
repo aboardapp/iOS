@@ -14,61 +14,15 @@ var {
 
 
 class Main extends React.Component {
-  constructor () {
-    super();
-    this.state = {
-      user: null
-    };
-  }
-
-  onChangeForm(value, validated) {
-    console.log('change form', value, validated);
-    this.userValue = value;
-    this.validated = validated;
-  }
-
-  onSave() {
-    if (!this.validated) {
-      AlertIOS.alert(
-        'Aboard',
-        'You only can save once the data is validated',
-        [
-          {
-            text: 'OK',
-            onPress: () => console.log('Tapped OK'),
-          },
-        ]
-      );
-      return;
-    }
-    let user = this.props.user;
-    user.set("name", this.userValue.name);
-    user.set("email", this.userValue.email);
-    user.set("phone", this.userValue.phone);
-    user.set("validated", true);
-    user.save();
-    this.setState(this.state);
-  }
-
   render () {
-    var validated = !!this.props.user.get('validated');
+    var validated = !!this.props.user.get('signed');
     return (
       validated?<RidesScreen user={this.props.user} />:
-      <NavigatorIOS
-        ref="nav"
-        style={styles.container}
-        itemWrapperStyle={styles.allPages}
-        initialRoute={{
-          title: 'Sign Up',
-          component: Profile,
-          rightButtonTitle: 'Save',
-          onRightButtonPress: this.onSave.bind(this),
-          passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this) }
-        }}
-      />
+      <Profile user={this.props.user} onSave={() => this.setState(this.state)} />
     );
   }
 };
+
 
 var styles = StyleSheet.create({
   container: {

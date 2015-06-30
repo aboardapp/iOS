@@ -3,6 +3,7 @@ var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 
 var RideCell = require('./RideCell')
+var Profile = require('./Profile');
 
 var Form = t.form.Form;
 var {
@@ -69,7 +70,7 @@ class MainRides extends React.Component {
     return (<Text>My Rides</Text>);
   }
   _renderProfile() {
-    return (<Text>Profile</Text>);
+    return (<Profile user={this.props.user} />);
   }
   render() {
     return (
