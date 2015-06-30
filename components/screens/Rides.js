@@ -1,8 +1,10 @@
 var React = require('react-native');
+var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 
-var Form = t.form.Form;
+var RideCell = require('./RideCell')
 
+var Form = t.form.Form;
 var {
   NavigatorIOS,
   View,
@@ -10,21 +12,36 @@ var {
   Image,
   StyleSheet,
   AlertIOS,
-  TabBarIOS
+  TabBarIOS,
+  ListView
 } = React;
 
-class Explore extends React.Component {
+
+class Explore extends ParseComponent {
   constructor () {
     super();
     this.state = {
-      selectedTab: 'redTab',
-      notifCount: 0,
-      presses: 0,
+    };
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+  }
+
+  observe(props, state) {
+    return {
+      items: new Parse.Query('Ride').ascending('createdAt')
     };
   }
 
+  selectRide(ride) {
+    alert('select ride');
+  }
+
   render() {
-    return (<Text>Rides</Text>);
+    return (
+      <ListView
+        dataSource={this.ds.cloneWithRows(this.data.items)}
+        renderRow={(rowData) => <RideCell {...rowData} onSelect={() => this.selectRide(rowData)} />}
+      />
+    );
   }
 }
 
