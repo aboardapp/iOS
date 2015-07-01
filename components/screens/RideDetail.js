@@ -4,6 +4,7 @@ var t = require('tcomb-form-native');
 var ParseReact = require('parse-react');
 var Modal = require('react-native-modal');
 var Communications = require('react-native-communications');
+var moment = require('moment');
 
 var Button = require('../Button');
 
@@ -168,7 +169,7 @@ class RideDetail extends ParseComponent {
             <View style={styles.header}>
               <View style={styles.headerInfo}>
                 <Text style={styles.name}>{ride.ride.name}</Text>
-                <Text style={styles.date}>Wednesday, June 30</Text>
+                <Text style={styles.date}>{moment(ride.date).format('dddd, LL')}</Text>
                 <Text style={styles.driverName}>Driver: {ride.ride.driver.name}</Text>
               </View>
               <View style={styles.headerSeats}>
