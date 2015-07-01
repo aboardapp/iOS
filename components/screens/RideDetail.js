@@ -12,8 +12,16 @@ var {
   StyleSheet,
   AlertIOS,
   TabBarIOS,
-  ListView
+  ListView,
+  MapView
 } = React;
+
+var region = {
+  latitude: 0,
+  longitude: 0,
+  latitudeDelta: 0,
+  longitudeDelta: 0,
+};
 
 
 class RideDetail extends ParseComponent {
@@ -41,7 +49,14 @@ class RideDetail extends ParseComponent {
     // console.log(ride);
 
     // console.log('RIDE', this.data.ride);
-    return (<View style={styles.tabContent}><Text>My Rides{ride} </Text></View>);
+    return (<View style={styles.tabContent}>
+        <MapView
+          style={styles.map}
+          region={region}
+        />
+
+      <Text>My Rides{ride} </Text>
+    </View>);
   }
 }
 
@@ -49,6 +64,10 @@ var styles = StyleSheet.create({
   tabContent: {
     paddingTop: 64,
     alignItems: 'center',
+  },
+  map: {
+    height: 150,
+    marginBottom: 10,
   },
   tabText: {
     color: 'white',

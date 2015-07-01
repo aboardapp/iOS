@@ -37,9 +37,9 @@ var stylesheet = {
     // the style applied when a validation error occours
     error: {
       color: ERROR_COLOR,
-      fontSize: FONT_SIZE,
+      fontSize: 13,
       fontFamily: FONT_FAMILY,
-      marginBottom: 7,
+      marginBottom: 4,
       fontWeight: FONT_WEIGHT
     }
   },
@@ -78,9 +78,8 @@ var stylesheet = {
       color: INPUT_COLOR,
       fontFamily: FONT_FAMILY,
       fontSize: FONT_SIZE,
-      height: 36,
+      height: 48,
       padding: 7,
-      borderRadius: 4,
       borderColor: ERROR_COLOR,
       borderWidth: 1,
       marginBottom: 5

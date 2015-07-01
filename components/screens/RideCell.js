@@ -17,6 +17,7 @@ class RideCell extends React.Component {
     let ride = model.ride;
     let riders = model.riders;
     let picture = ride.driver && ride.driver.picture;
+    let seats = ride.seats;
     return (
       <View>
         <TouchableHighlight
@@ -28,11 +29,9 @@ class RideCell extends React.Component {
             />
             <View style={styles.textContainer}>
               <Text style={styles.rideName}>{ride.name}</Text>
-              <Text style={styles.stops}>{ride.stops}</Text>
-              <Text>{ride.driver && ride.driver.name}</Text>
-              <Text>{ride.seats}</Text>
-              <Text>{ride.stops.length}</Text>
+              <Text style={styles.stops}>SF - Santa Clara</Text>
             </View>
+            <Text style={styles.seats}>{seats}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -50,6 +49,8 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 0,
     borderWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
     marginTop: -1,
     borderColor: '#CCCCCC',
   },
@@ -61,10 +62,27 @@ var styles = StyleSheet.create({
   },
   rideName: {
     fontFamily: 'Avenir',
-    fontWeight: '500',
+    fontWeight: '700',
     fontSize: 15,
     color: '#335485',
   },
+  stops: {
+    fontFamily: 'Avenir',
+    fontWeight: '300',
+    fontSize: 13,
+    color: '#999999',
+
+  },
+  seats: {
+    fontFamily: 'Avenir',
+    fontWeight: '700',
+    fontSize: 15,
+    color: '#335485',
+    alignSelf: "center",
+    textAlign: "center",
+    width: 50,
+  },
+
   cellBorder: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     // Trick to get the thinest line the device can display

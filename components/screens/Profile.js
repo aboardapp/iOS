@@ -86,9 +86,11 @@ class Profile extends React.Component {
       .then((response) => response.json())
       .then((responseData) => {
         var {name, email} = responseData;
-        this.state.value.name = this.state.value.name || name;
-        this.state.value.email = this.state.value.name || email;
-        this.setState(this.state);
+        var value = Object.assign({}, this.state.value);
+        value.name = this.state.value.name || name;
+        value.email = this.state.value.email || email;
+        this.setState({value: value});
+        this.refreshValue();
       })
       .done();
   }

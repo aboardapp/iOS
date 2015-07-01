@@ -24,12 +24,19 @@ class Explore extends ParseComponent {
     super(props);
     this.state = {
     };
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+      sectionHeaderHasChanged: (h1, h2) => h1 !== h2,
+    });
   }
 
   observe(props, state) {
+    var rides = new Parse.Query('CommissionedRide').include(["ride","ride.driver"]).ascending('date');
+    if (props.favorites) {
+      rides = rides;
+    }
     return {
-      items: new Parse.Query('CommissionedRide').include(["ride","ride.driver"]).ascending('date')
+      items: rides
     };
   }
 
@@ -45,10 +52,21 @@ class Explore extends ParseComponent {
     console.log('ITEMS', this.data.items);
     return (
       <ListView
-        dataSource={this.ds.cloneWithRows(this.data.items)}
+        dataSource={this.ds.cloneWithRowsAndSections({today:this.data.items})}
         style={{paddingTop:0}}
+        renderSectionHeader={this._renderSectionHeader}
         renderRow={(rowData) => <RideCell model={rowData} onSelect={() => this.selectRide(rowData)} />}
       />
+    );
+  }
+
+  _renderSectionHeader(data, section) {
+    return (
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionHeaderTitle}>
+          {section.toUpperCase()}
+        </Text>
+      </View>
     );
   }
 }
@@ -74,7 +92,7 @@ class MainRides extends React.Component {
     return <Explore user={this.props.user} />;
   }
   _renderMyRides() {
-    return (<Text>My Rides</Text>);
+    return <Explore user={this.props.user} favorites={true} />;
   }
   _renderProfile() {
     return (<Profile user={this.props.user} signup={false} />);
@@ -143,7 +161,18 @@ var styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  }
+  },
+  sectionHeader: {
+    padding: 5,
+    backgroundColor: '#EEEEEE',
+  },
+  group: {
+    backgroundColor: 'white',
+  },
+  sectionHeaderTitle: {
+    fontWeight: '500',
+    fontSize: 11,
+  },
 });
 
 
