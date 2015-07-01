@@ -48,14 +48,10 @@ class RideDetail extends ParseComponent {
     // // console.log(po);
     // console.log(ride);
 
-    // console.log('RIDE', this.data.ride);
     return (<View style={styles.tabContent}>
         <MapView
           style={styles.map}
-          region={region}
-        />
-
-      <Text>My Rides{ride} </Text>
+          region={region} />
     </View>);
   }
 }
@@ -66,7 +62,10 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    height: 150,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 210,
     marginBottom: 10,
   },
   tabText: {
