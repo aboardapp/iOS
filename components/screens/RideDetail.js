@@ -3,6 +3,8 @@ var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 var ParseReact = require('parse-react');
 
+var Button = require('../Button');
+
 var Form = t.form.Form;
 var {
   NavigatorIOS,
@@ -33,6 +35,7 @@ class Stop extends React.Component {
           <Text style={styles.stopLocation}>{this.props.location}</Text>
           <Text style={styles.stopRiders}>2 riders to pickup</Text>
         </View>
+        <Button text="RESERVE" />
       </View>
     );
   }
@@ -83,6 +86,11 @@ class RideDetail extends ParseComponent {
           </View>
           <Stop time="10:30 am" location="Polk & Washington" />
           <Stop time="10:45 am" location="301 Howard Street" />
+          <View style={styles.finalStop}>
+            <Image style={styles.finalStopIcon} source={require('image!location-icon')} />
+            <Text style={styles.finalStopName}>Chegg Santa Clara Office</Text>
+            <Text style={styles.finalStopLocation}>Chegg Santa Clara Office</Text>
+          </View>
         </ScrollView>
     </View>);
   }
@@ -123,7 +131,7 @@ var styles = StyleSheet.create({
     top: 0,
     paddingTop: 240,
     flex: 1,
-    bottom: 0,
+    bottom: -15,
     left: 0,
     backgroundColor: 'transparent',
     right: 0,
@@ -160,7 +168,7 @@ var styles = StyleSheet.create({
   numSeats: {
     fontFamily: 'Avenir',
     fontSize: 30,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#335485',
     textAlign: 'center',
   },
@@ -195,12 +203,23 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  finalStop: {
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    marginBottom: -1,
+    padding: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderColor: '#dddddd',
+    paddingLeft: 90,
+  },
   stopTime: {
     fontFamily: 'Avenir',
     fontSize: 13,
     fontWeight: '300',
+    width: 75,
     color: '#999999',
-    marginRight: 20,
   },
   stopContainer: {
     flex: 1
@@ -216,6 +235,25 @@ var styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     color: '#999999',
+  },
+  finalStopName: {
+    fontFamily: 'Avenir',
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333333',
+  },
+  finalStopLocation: {
+    fontFamily: 'Avenir',
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#999999',
+  },
+  finalStopIcon: {
+    position: 'absolute',
+    top: 23,
+    width: 22,
+    left: 30,
+    height: 31,
   },
 });
 
