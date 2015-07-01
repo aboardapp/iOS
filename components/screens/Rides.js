@@ -31,12 +31,17 @@ class Explore extends ParseComponent {
   }
 
   observe(props, state) {
-    var rides = new Parse.Query('CommissionedRide').include(["ride","ride.driver"]).ascending('date');
+    var items = new Parse.Query('CommissionedRide').include(["ride","ride.driver"]).ascending('date');
+    var owned = new Parse.Query('CommissionedRide').equalTo('riders', props.user).include(["ride","ride.driver"]).ascending('date');
+    var driving = new Parse.Query('CommissionedRide').equalTo('ride.driver', props.user).ascending('date');
     if (props.favorites) {
-      rides = rides.equalTo('riders', props.user);
+      return {
+        owned: owned,
+        driving: driving
+      };
     }
     return {
-      items: rides
+      items: items
     };
   }
 
@@ -48,11 +53,19 @@ class Explore extends ParseComponent {
     });
   }
 
+  _getDataSource() {
+    if (this.props.favorites) {
+      return this.ds.cloneWithRowsAndSections({
+        'As a rider':this.data.owned,
+        'As a driver': this.data.driving
+      });
+    }
+    return this.ds.cloneWithRowsAndSections({today:this.data.items});
+  }
   render() {
-    console.log('ITEMS', this.data.items);
     return (
       <ListView
-        dataSource={this.ds.cloneWithRowsAndSections({today:this.data.items})}
+        dataSource={this._getDataSource()}
         style={{paddingTop:0}}
         renderSectionHeader={this._renderSectionHeader}
         renderRow={(rowData) => <RideCell model={rowData} onSelect={() => this.selectRide(rowData)} />}
