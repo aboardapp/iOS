@@ -143,9 +143,11 @@ class MainRides extends React.Component {
         tintColor="#335485"
         barTintColor="white">
         <TabBarIOS.Item
-          systemIcon="search"
-          title="Rides"
+          icon={require('image!search-icon-inactive')}
+          selectedIcon={require('image!search-icon-active')}
           selected={this.state.selectedTab === 'explore'}
+          style={styles.tabItem}
+          title="Explore"
           onPress={() => {
             this.setState({
               selectedTab: 'explore',
@@ -154,8 +156,11 @@ class MainRides extends React.Component {
           {this._renderRides()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="favorites"
+          icon={require('image!rides-icon-inactive')}
+          selectedIcon={require('image!rides-icon-active')}
           selected={this.state.selectedTab === 'myrides'}
+          style={styles.tabItem}
+          title="My Rides"
           onPress={() => {
             this.setState({
               selectedTab: 'myrides',
@@ -164,8 +169,10 @@ class MainRides extends React.Component {
           {this._renderMyRides()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="contacts"
+          icon={require('image!profile-icon-inactive')}
+          selectedIcon={require('image!profile-icon-active')}
           selected={this.state.selectedTab === 'profile'}
+          style={styles.tabItem}
           title="My Profile"
           onPress={() => {
             this.setState({
@@ -205,6 +212,8 @@ var styles = StyleSheet.create({
       height: 1,
       width: 0
     },
+  },
+  tabItem: {
   },
   group: {
     backgroundColor: 'white',
