@@ -67,7 +67,7 @@ class Explore extends ParseComponent {
     return (
       <RefreshableListView
         dataSource={this._getDataSource()}
-        style={{paddingTop:0}}
+        style={{marginBottom:64}}
         loadData={() => this.refreshQueries()}
         refreshDescription="Refreshing"
         renderSectionHeader={this._renderSectionHeader}
