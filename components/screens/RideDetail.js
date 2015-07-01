@@ -22,13 +22,6 @@ var {
   TouchableOpacity
 } = React;
 
-var region = {
-  latitude: 37.7833,
-  longitude: -122.4167,
-  latitudeDelta: .1,
-  longitudeDelta: .1,
-};
-
 function convert_to_24h(time_str) {
     // Convert a string like 10:05:23 PM to 24h format, returns like [22,5,23]
     var time = time_str.match(/(\d+):(\d+)\s?(\w)/);
@@ -136,6 +129,28 @@ class RideDetail extends ParseComponent {
       );
   }
 
+  _getPins(stops) {
+    var pins = [];
+    stops.forEach(function(stop) {
+      pins.push({
+        latitude: stop.geopoint.latitude,
+        longitude: stop.geopoint.longitude,
+        title: stop.name,
+        subtitle: stop.time
+      });
+    });
+    return pins;
+  }
+
+  _getRegion(stops) {
+    return {
+      latitude: 37.7833,
+      longitude: -122.4167,
+      latitudeDelta: .1,
+      longitudeDelta: .1,
+    }
+  };
+
   render() {
     let ride = this.props.ride;
     let instance = this.props.instance;
@@ -149,6 +164,9 @@ class RideDetail extends ParseComponent {
     var stops = all_stops.slice(0,-1);
     var final_stop = all_stops.length?all_stops[all_stops.length-1]:{};
 
+    var pins = this._getPins(all_stops);
+    var region = this._getRegion(all_stops);
+
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
           <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
@@ -159,7 +177,8 @@ class RideDetail extends ParseComponent {
         </Modal>
         <MapView
           style={styles.map}
-          region={region} />
+          region={region}
+          annotations={pins} />
           <ScrollView style={styles.scroll} automaticallyAdjustContentInsets={false} contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <View style={styles.headerInfo}>
