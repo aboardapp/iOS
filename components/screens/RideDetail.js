@@ -29,6 +29,25 @@ var region = {
   longitudeDelta: .1,
 };
 
+function convert_to_24h(time_str) {
+    // Convert a string like 10:05:23 PM to 24h format, returns like [22,5,23]
+    var time = time_str.match(/(\d+):(\d+)\s?(\w)/);
+    var hours = Number(time[1]);
+    var minutes = Number(time[2]);
+    var meridian = time[3].toLowerCase();
+
+    if (meridian == 'p' && hours < 12) {
+      hours = hours + 12;
+    }
+    else if (meridian == 'a' && hours == 12) {
+      hours = hours - 12;
+    }
+    if (minutes<10) {minutes = '0'+minutes};
+    var x = Number([hours, minutes].join(''));
+    console.log(x);
+    return x;
+  };
+
 class Stop extends React.Component {
   render() {
     return (
@@ -37,7 +56,7 @@ class Stop extends React.Component {
           <Text style={styles.stopTime}>{this.props.time}</Text>
           <View style={styles.stopContainer}>
             <Text style={styles.stopLocation}>{this.props.location}</Text>
-            <Text style={styles.stopRiders}>2 riders to pickup</Text>
+            <Text style={styles.stopRiders}>{this.props.riders.length} riders to pickup</Text>
           </View>
           <Button text="RESERVE" onPress={this.props.onReserve} />
         </View>
@@ -88,17 +107,21 @@ class RideDetail extends ParseComponent {
   }
 
   observe(props, state) {
+    var riders = props.instance.relation('riders').query();
+    var stops = props.instance.get('ride').relation('stops').query();
+    // console.log('RIDERS', props.instance.relation('riders'));
     return {
-      ride: props.ride
+      riders: riders,
+      stops: stops
     };
   }
-  componentDidMount() {
-    // let ride = this.data.ride;
-    // console.log(ride);
-    // super.componentDidMount();
-    // ParseReact.Mutation.AddRelation(ride, 'riders', this.props.user.id).dispatch();
-    // this.refreshQueries();
-  }
+  // componentDidMount() {
+  //   // let ride = this.data.ride;
+  //   console.log('componentDidMount', this.data.riders);
+  //   super.componentDidMount();
+  //   // ParseReact.Mutation.AddRelation(ride, 'riders', this.props.user.id).dispatch();
+  //   // this.refreshQueries();
+  // }
 
   doReserve(stop) {
       AlertIOS.alert(
@@ -115,10 +138,16 @@ class RideDetail extends ParseComponent {
 
   render() {
     let ride = this.props.ride;
+    let instance = this.props.instance;
+    // console.log('RENDER data', this.data, instance)
     // var riders = ride.riders;
     // riders.parent = ride;
     // // console.log(po);
     // console.log(ride);
+    var all_stops = this.data.stops.slice();
+    all_stops.sort((a,b) => convert_to_24h(a.time) > convert_to_24h(b.time));
+    var stops = all_stops.slice(0,-1);
+    var final_stop = all_stops.length?all_stops[all_stops.length-1]:{};
 
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
@@ -144,14 +173,15 @@ class RideDetail extends ParseComponent {
               </View>
           </View>
           <View style={styles.stopsHeader}>
-            <Text style={styles.stopsHeaderText}>2 stops in this ride</Text>
+            <Text style={styles.stopsHeaderText}>{this.data.stops.length-1} stops in this ride</Text>
           </View>
-          <Stop time="10:30 am" location="Polk & Washington" onViewDetails={() => this.openModal('0')} onReserve={() => this.doReserve('0')}/>
-          <Stop time="10:45 am" location="301 Howard Street" onViewDetails={() => this.openModal('1')} onReserve={() => this.doReserve('1')}/>
+          {stops.map((stop) =>
+            <Stop time={stop.time} location={stop.name} riders={[]} onViewDetails={() => this.openModal(stop.objectId)} onReserve={() => this.doReserve(stop.objectId)} />
+          )}
           <View style={styles.finalStop}>
             <Image style={styles.finalStopIcon} source={require('image!location-icon')} />
-            <Text style={styles.finalStopName}>Chegg Santa Clara Office</Text>
-            <Text style={styles.finalStopLocation}>Chegg Santa Clara Office</Text>
+            <Text style={styles.finalStopName}>{final_stop.name}</Text>
+            <Text style={styles.finalStopLocation}>{final_stop.address}</Text>
           </View>
         </ScrollView>
     </View>);

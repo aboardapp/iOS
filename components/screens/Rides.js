@@ -7,6 +7,15 @@ var RideCell = require('./RideCell');
 var Profile = require('./Profile');
 var RideDetail = require('./RideDetail');
 
+var getInstanceForModel = function (model) {
+  var CommissionedRide = Parse.Object.extend('CommissionedRide');
+  return new CommissionedRide(model);
+}
+var getInstanceForModelRide = function (model) {
+  var Ride = Parse.Object.extend('Ride');
+  return new Ride(model);
+}
+
 var Form = t.form.Form;
 var {
   NavigatorIOS,
@@ -46,11 +55,11 @@ class Explore extends ParseComponent {
     };
   }
 
-  selectRide(ride) {
+  selectRide(ride, instance) {
     this.props.navigator.push({
       title: ride.ride.name,
       component: RideDetail,
-      passProps: { ride: ride, user:this.props.user }
+      passProps: { ride: ride, user:this.props.user, instance: instance }
     });
   }
 
@@ -63,6 +72,12 @@ class Explore extends ParseComponent {
     }
     return this.ds.cloneWithRowsAndSections({today:this.data.items});
   }
+  renderRow(rowData) {
+    var ride = getInstanceForModelRide({id:rowData.ride.objectId});
+    var instance = getInstanceForModel({id:rowData.objectId, ride: ride});
+    return <RideCell model={rowData} instance={instance} onSelect={() => this.selectRide(rowData, instance)} />
+  }
+
   render() {
     return (
       <RefreshableListView
@@ -71,7 +86,7 @@ class Explore extends ParseComponent {
         loadData={() => this.refreshQueries()}
         refreshDescription="Refreshing"
         renderSectionHeader={this._renderSectionHeader}
-        renderRow={(rowData) => <RideCell model={rowData} onSelect={() => this.selectRide(rowData)} />}
+        renderRow={this.renderRow.bind(this)}
       />
     );
   }

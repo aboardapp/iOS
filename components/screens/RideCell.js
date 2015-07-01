@@ -13,6 +13,7 @@ var {
 
 class RideCell extends React.Component {
   render() {
+    console.log('INSTANCE', this.props.instance)
     let model = this.props.model;
     let ride = model.ride;
     let riders = model.riders;
