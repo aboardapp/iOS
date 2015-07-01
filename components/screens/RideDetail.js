@@ -48,6 +48,7 @@ class Stop extends React.Component {
 
 class Rider extends React.Component {
   render() {
+    let phone = ''+this.props.phone;
     return (
       <View style={styles.rider}>
         <Image
@@ -55,10 +56,10 @@ class Rider extends React.Component {
           style={styles.riderImage}
         />
         <Text style={styles.riderName}>{this.props.name}</Text>
-        {!this.props.me?<TouchableOpacity onPress={() => Communications.phonecall('0123456789', false)}>
+        {!this.props.me?<TouchableOpacity onPress={() => Communications.phonecall(phone, false)}>
             <Image style={styles.riderCall} source={require('image!phone-icon')} />
         </TouchableOpacity>:null}
-        {!this.props.me?<TouchableOpacity onPress={() => Communications.text('0123456789')}>
+        {!this.props.me?<TouchableOpacity onPress={() => Communications.text(phone)}>
             <Image style={styles.riderChat} source={require('image!chat-icon')} />
         </TouchableOpacity>:null}
         {this.props.me?<TouchableOpacity>
@@ -123,8 +124,8 @@ class RideDetail extends ParseComponent {
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
           <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
           <View style={styles.riders}>
-            <Rider me={true} name={this.props.user.get('name')} picture={this.props.user.get('picture')}/>
-            <Rider me={false} name={this.props.user.get('name')} picture={this.props.user.get('picture')}/>
+            <Rider me={true} name={this.props.user.get('name')} picture={this.props.user.get('picture')} phone={this.props.user.get('phone')}/>
+            <Rider me={false} name={this.props.user.get('name')} picture={this.props.user.get('picture')} phone={this.props.user.get('phone')}/>
           </View>
         </Modal>
         <MapView
