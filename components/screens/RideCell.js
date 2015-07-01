@@ -1,4 +1,5 @@
 var React = require('react-native');
+var ParseComponent = require('parse-react/class')
 
 var {
   NavigatorIOS,
@@ -11,14 +12,24 @@ var {
 } = React;
 
 
-class RideCell extends React.Component {
+class RideCell extends ParseComponent {
+  observe(props, state) {
+    var riders = props.instance.relation('riders').query();
+    var stops = props.instance.get('ride').relation('stops').query();
+    // console.log('RIDERS', props.instance.relation('riders'));
+    return {
+      riders: riders,
+      stops: stops
+    };
+  }
   render() {
     console.log('INSTANCE', this.props.instance)
     let model = this.props.model;
     let ride = model.ride;
     let riders = model.riders;
     let picture = ride.driver && ride.driver.picture;
-    let seats = ride.seats;
+    let seats = ride.seats-this.data.riders.length;
+    let stopsStr = this.data.stops.map((stop) => stop.name).join('-')
     return (
       <View>
         <TouchableHighlight
@@ -30,9 +41,9 @@ class RideCell extends React.Component {
             />
             <View style={styles.textContainer}>
               <Text style={styles.rideName}>{ride.name}</Text>
-              <Text style={styles.stops}>SF - Santa Clara</Text>
+              <Text style={styles.stops}>{stopsStr}</Text>
             </View>
-            <Text style={styles.seats}>{seats}</Text>
+            <Text style={styles.seats}>{seats}/{ride.seats}</Text>
           </View>
         </TouchableHighlight>
       </View>
