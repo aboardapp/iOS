@@ -137,7 +137,7 @@ class Profile extends React.Component {
           <Text style={styles.signup}>Sign Up</Text>
         </TouchableOpacity>:
         <TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onLogout.bind(this)}>
-          <Text style={styles.logout}>Logout</Text>
+          <Text style={styles.logout}>LOGOUT</Text>
         </TouchableOpacity>}
 
       </View>
@@ -265,14 +265,13 @@ var styles = StyleSheet.create({
     color: '#335485',
     padding: 9,
     marginTop: 13,
-    paddingBottom: 2,
+    paddingBottom: 5,
     backgroundColor: '#FFFFFF',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#335485',
-    width: 100,
     borderRadius: 3,
     textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: '700',
     alignSelf: 'center',
   },
   welcome: {
