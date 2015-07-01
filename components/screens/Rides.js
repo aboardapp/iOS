@@ -1,6 +1,7 @@
 var React = require('react-native');
 var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
+var RefreshableListView = require('react-native-refreshable-listview')
 
 var RideCell = require('./RideCell');
 var Profile = require('./Profile');
@@ -64,9 +65,11 @@ class Explore extends ParseComponent {
   }
   render() {
     return (
-      <ListView
+      <RefreshableListView
         dataSource={this._getDataSource()}
         style={{paddingTop:0}}
+        loadData={() => this.refreshQueries()}
+        refreshDescription="Refreshing"
         renderSectionHeader={this._renderSectionHeader}
         renderRow={(rowData) => <RideCell model={rowData} onSelect={() => this.selectRide(rowData)} />}
       />
