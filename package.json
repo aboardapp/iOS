@@ -10,6 +10,7 @@
     "parse-react": "^0.4.1",
     "react-native": "^0.6.0",
     "react-native-facebook-login": "0.5.0",
+    "react-native-modal": "^0.3.8",
     "tcomb": "^1.0.3",
     "tcomb-form-native": "^0.2.2",
     "tcomb-validation": "^1.0.4"

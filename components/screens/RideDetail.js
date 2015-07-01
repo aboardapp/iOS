@@ -2,6 +2,7 @@ var React = require('react-native');
 var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 var ParseReact = require('parse-react');
+var Modal = require('react-native-modal');
 
 var Button = require('../Button');
 
@@ -16,7 +17,8 @@ var {
   TabBarIOS,
   ListView,
   MapView,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } = React;
 
 var region = {
@@ -29,22 +31,36 @@ var region = {
 class Stop extends React.Component {
   render() {
     return (
-      <View style={styles.stop}>
-        <Text style={styles.stopTime}>{this.props.time}</Text>
-        <View style={styles.stopContainer}>
-          <Text style={styles.stopLocation}>{this.props.location}</Text>
-          <Text style={styles.stopRiders}>2 riders to pickup</Text>
+      <TouchableOpacity onPress={this.props.onViewDetails}>
+        <View style={styles.stop}>
+          <Text style={styles.stopTime}>{this.props.time}</Text>
+          <View style={styles.stopContainer}>
+            <Text style={styles.stopLocation}>{this.props.location}</Text>
+            <Text style={styles.stopRiders}>2 riders to pickup</Text>
+          </View>
+          <Button text="RESERVE" onPress={this.props.onReserve} />
         </View>
-        <Button text="RESERVE" />
-      </View>
+      </TouchableOpacity>
     );
   }
 }
 
 class RideDetail extends ParseComponent {
-  constructor (props) {
-    super(props);
+  constructor() {
+    super();
+    this.state = {
+      modalStop: false
+    };
   }
+
+  openModal(stop) {
+    this.setState({modalStop: stop});
+  }
+
+  closeModal() {
+    this.setState({modalStop: false});
+  }
+
   observe(props, state) {
     return {
       ride: props.ride
@@ -58,6 +74,19 @@ class RideDetail extends ParseComponent {
     // this.refreshQueries();
   }
 
+  doReserve(stop) {
+      AlertIOS.alert(
+        'Aboard',
+        `Your reservation in ${stop} was successful`,
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('Tapped OK'),
+          },
+        ]
+      );
+  }
+
   render() {
     let ride = this.props.ride;
     // var riders = ride.riders;
@@ -66,6 +95,9 @@ class RideDetail extends ParseComponent {
     // console.log(ride);
 
     return (<View style={styles.tabContent}>
+        <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
+          <Text>Hello world!</Text>
+        </Modal>
         <MapView
           style={styles.map}
           region={region} />
@@ -84,8 +116,8 @@ class RideDetail extends ParseComponent {
           <View style={styles.stopsHeader}>
             <Text style={styles.stopsHeaderText}>2 stops in this ride</Text>
           </View>
-          <Stop time="10:30 am" location="Polk & Washington" />
-          <Stop time="10:45 am" location="301 Howard Street" />
+          <Stop time="10:30 am" location="Polk & Washington" onViewDetails={() => this.openModal('0')} onReserve={() => this.doReserve('0')}/>
+          <Stop time="10:45 am" location="301 Howard Street" onViewDetails={() => this.openModal('1')} onReserve={() => this.doReserve('1')}/>
           <View style={styles.finalStop}>
             <Image style={styles.finalStopIcon} source={require('image!location-icon')} />
             <Text style={styles.finalStopName}>Chegg Santa Clara Office</Text>

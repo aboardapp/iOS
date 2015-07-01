@@ -189,6 +189,8 @@ var styles = StyleSheet.create({
     margin: 50,
   },
   navContainer: {
+    flex: 1,
+    marginBottom: -64
   },
   container: {
     flex: 1,
