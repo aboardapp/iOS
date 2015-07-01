@@ -3,6 +3,7 @@ var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 var ParseReact = require('parse-react');
 var Modal = require('react-native-modal');
+var Communications = require('react-native-communications');
 
 var Button = require('../Button');
 
@@ -41,6 +42,30 @@ class Stop extends React.Component {
           <Button text="RESERVE" onPress={this.props.onReserve} />
         </View>
       </TouchableOpacity>
+    );
+  }
+}
+
+class Rider extends React.Component {
+  render() {
+    return (
+      <View style={styles.rider}>
+        <Image
+          source={{uri: this.props.picture}}
+          style={styles.riderImage}
+        />
+        <Text style={styles.riderName}>{this.props.name}</Text>
+        {!this.props.me?<TouchableOpacity onPress={() => Communications.phonecall('0123456789', false)}>
+            <Image style={styles.riderCall} source={require('image!phone-icon')} />
+        </TouchableOpacity>:null}
+        {!this.props.me?<TouchableOpacity onPress={() => Communications.text('0123456789')}>
+            <Image style={styles.riderChat} source={require('image!chat-icon')} />
+        </TouchableOpacity>:null}
+        {this.props.me?<TouchableOpacity>
+          <Text style={styles.riderCancel}>Cancel</Text>
+        </TouchableOpacity>:null}
+      </View>
+      
     );
   }
 }
@@ -96,7 +121,11 @@ class RideDetail extends ParseComponent {
 
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
-          <Text>Hello world!</Text>
+          <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
+          <View style={styles.riders}>
+            <Rider me={true} name={this.props.user.get('name')} picture={this.props.user.get('picture')}/>
+            <Rider me={false} name={this.props.user.get('name')} picture={this.props.user.get('picture')}/>
+          </View>
         </Modal>
         <MapView
           style={styles.map}
@@ -280,12 +309,65 @@ var styles = StyleSheet.create({
     fontWeight: '400',
     color: '#999999',
   },
+  modalHeader: {
+    margin: 10,
+    fontFamily: 'Avenir',
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 30,
+  },
   finalStopIcon: {
     position: 'absolute',
     top: 23,
     width: 22,
     left: 30,
     height: 31,
+  },
+  rider: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: '#DDDDDD',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginTop: -1,
+  },
+  riders: {
+    borderTopWidth: 1,
+    borderTopColor: 'blue',
+  },
+  riderImage: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 15,
+  },
+  riderName: {
+    fontFamily: 'Avenir',
+    fontSize: 16,
+    flex: 1,
+    color: '#333333',
+  },
+  riderCall: {
+    width: 18,
+    height: 18,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  riderChat: {
+    width: 18,
+    height: 18,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  riderCancel: {
+    fontFamily: 'Avenir',
+    fontSize: 14,
+    fontWeight: '800',
+    textAlign: 'center',
+    color: '#335485',
   },
 });
 
