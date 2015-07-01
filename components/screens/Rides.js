@@ -49,7 +49,7 @@ class Explore extends ParseComponent {
     this.props.navigator.push({
       title: ride.ride.name,
       component: RideDetail,
-      passProps: { ride: ride, user:this.props.user }
+      passProps: { ride: ride, user:this.props.user, stops: ride.stops }
     });
   }
 
