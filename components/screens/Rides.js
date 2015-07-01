@@ -33,7 +33,7 @@ class Explore extends ParseComponent {
   observe(props, state) {
     var rides = new Parse.Query('CommissionedRide').include(["ride","ride.driver"]).ascending('date');
     if (props.favorites) {
-      rides = rides;
+      rides = rides.equalTo('riders', props.user);
     }
     return {
       items: rides
