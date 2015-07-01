@@ -15,7 +15,8 @@ var {
   NavigatorIOS,
   StyleSheet,
   View,
-  Text
+  Text,
+  StatusBarIOS
 } = React;
 
 class AppEntry extends React.Component {
@@ -48,6 +49,7 @@ var styles = StyleSheet.create({
   }
 });
 
+StatusBarIOS.setStyle('light-content');
 AppRegistry.registerComponent('AppEntry', () => AppEntry);
 
 module.exports = AppEntry;

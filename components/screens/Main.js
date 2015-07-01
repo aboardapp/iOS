@@ -18,7 +18,7 @@ class Main extends React.Component {
     var validated = !!this.props.user.get('signed');
     return (
       validated?<RidesScreen user={this.props.user} />:
-      <Profile user={this.props.user} onSave={() => this.setState(this.state)} />
+      <Profile user={this.props.user} onSave={() => this.setState(this.state)} signup={true} />
     );
   }
 };

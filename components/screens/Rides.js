@@ -70,12 +70,12 @@ class MainRides extends React.Component {
     return (<Text>My Rides</Text>);
   }
   _renderProfile() {
-    return (<Profile user={this.props.user} />);
+    return (<Profile user={this.props.user} signup={false} />);
   }
   render() {
     return (
       <TabBarIOS
-        tintColor="blue"
+        tintColor="#335485"
         barTintColor="white">
         <TabBarIOS.Item
           systemIcon="search"
@@ -99,8 +99,9 @@ class MainRides extends React.Component {
           {this._renderMyRides()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="more"
+          systemIcon="contacts"
           selected={this.state.selectedTab === 'profile'}
+          title="My Profile"
           onPress={() => {
             this.setState({
               selectedTab: 'profile'

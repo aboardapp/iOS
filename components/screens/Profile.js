@@ -1,6 +1,7 @@
 var React = require('react-native');
 var t = require('tcomb-form-native');
 var RidesScreen = require('./Rides');
+var formStylesheet = require('../formStyle');
 
 var Form = t.form.Form;
 
@@ -10,7 +11,8 @@ var {
   Text,
   Image,
   StyleSheet,
-  AlertIOS
+  AlertIOS,
+  TouchableOpacity,
 } = React;
 
 var Person = t.struct({
@@ -18,6 +20,20 @@ var Person = t.struct({
   email: t.Str,
   phone: t.Num,
 });
+
+var options = {
+  fields: {
+    name: {
+      stylesheet: formStylesheet
+    },
+    email: {
+      stylesheet: formStylesheet
+    },
+    phone: {
+      stylesheet: formStylesheet
+    }
+  }
+};
 
 class Profile extends React.Component {
   constructor (props) {
@@ -63,7 +79,7 @@ class Profile extends React.Component {
     var {access_token, id} = user.get('authData').facebook;
 
     var api = `https://graph.facebook.com/v2.3/${id}?fields=name,email&access_token=${access_token}`;
-    // var picture = `https://graph.facebook.com/${id}/picture?width=100&height=100&access_token=${access_token}`;
+    // var picture = `https://graph.facebook.com/${id}/picture?width=200&height=200&access_token=${access_token}`;
 
     fetch(api)
       .then((response) => response.json())
@@ -81,6 +97,10 @@ class Profile extends React.Component {
     this.refreshValue();
   }
 
+  onSave() {
+    this.props.onSave && this.props.onSave();
+  }
+
   componentDidMount() {
     this.refreshValue();
   }
@@ -96,20 +116,19 @@ class Profile extends React.Component {
     return (
       <View style={styles.container2}>
         <Image
-          style={photo &&
-            {
-              height: photo.height,
-              width: photo.width,
-            }
-          }
+          style={styles.photo}
           source={{uri: photo && photo.url}}
         />
         <Form
           ref="form"
           type={Person}
           value={this.state.value}
+          options={options} 
           onChange={this.onChange.bind(this)}
         />
+        {this.props.signup?<TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onSave.bind(this)}>
+          <Text style={styles.signup}>Sign Up</Text>
+        </TouchableOpacity>:null}
       </View>
     );
   }
@@ -158,19 +177,25 @@ class ProfileScreen extends React.Component {
   }
 
   render () {
-    let signed = this.isUserSigned();
+    let signup = !!this.props.signup;
+    var route = {
+      title: 'Sign Up',
+      component: Profile,
+      passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this), onSave: this.onSave.bind(this), signup: signup }
+    }
+    if (!signup) {
+      route.rightButtonTitle = 'Save',
+      route.onRightButtonPress = this.onSave.bind(this);
+    }
     return (
       <NavigatorIOS
         ref="nav"
+        barTintColor="#335485"
+        titleTextColor="#FFFFFF"
+        tintColor="#FFFFFF"
         style={styles.container}
         itemWrapperStyle={styles.allPages}
-        initialRoute={{
-          title: signed?'Your profile':'Sign Up',
-          component: Profile,
-          rightButtonTitle: 'Save',
-          onRightButtonPress: this.onSave.bind(this),
-          passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this) }
-        }}
+        initialRoute={route}
       />
     );
   }
@@ -179,15 +204,41 @@ class ProfileScreen extends React.Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   allPages: {
     backgroundColor: '#EEE',
     paddingTop: 64,
   },
+  photo: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    borderColor: '#335485',
+    borderWidth: 1,
+    marginBottom: 10,
+    alignSelf: 'center',
+  },
   container2: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
+  },
+  signup: {
+    fontFamily: 'Avenir',
+    fontSize: 24,
+    color: '#335485',
+    padding: 14,
+    marginTop: 20,
+    paddingBottom: 8,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 3,
+    borderColor: '#335485',
+    width: 180,
+    borderRadius: 3,
+    textAlign: 'center',
+    fontWeight: '500',
+    alignSelf: 'center',
   },
   welcome: {
     fontSize: 20,
