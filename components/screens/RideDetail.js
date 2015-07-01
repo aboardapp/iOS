@@ -22,10 +22,10 @@ var {
 } = React;
 
 var region = {
-  latitude: 0,
-  longitude: 0,
-  latitudeDelta: 0,
-  longitudeDelta: 0,
+  latitude: 37.7833,
+  longitude: -122.4167,
+  latitudeDelta: .1,
+  longitudeDelta: .1,
 };
 
 class Stop extends React.Component {
@@ -138,9 +138,10 @@ var styles = StyleSheet.create({
     // flex: 1,
     // height: 240,
     position: 'absolute',
+    top: -200,
     left: 0,
     right: 0,
-    height: 400,
+    height: 600,
   },
   header: {
     padding: 15,
