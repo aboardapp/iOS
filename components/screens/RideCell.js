@@ -51,7 +51,7 @@ var styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    marginTop: -1,
+    marginBottom: -1,
     borderColor: '#dddddd',
   },
   cellImage: {

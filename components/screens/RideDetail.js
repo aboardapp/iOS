@@ -24,6 +24,19 @@ var region = {
   longitudeDelta: 0,
 };
 
+class Stop extends React.Component {
+  render() {
+    return (
+      <View style={styles.stop}>
+        <Text style={styles.stopTime}>{this.props.time}</Text>
+        <View style={styles.stopContainer}>
+          <Text style={styles.stopLocation}>{this.props.location}</Text>
+          <Text style={styles.stopRiders}>2 riders to pickup</Text>
+        </View>
+      </View>
+    );
+  }
+}
 
 class RideDetail extends ParseComponent {
   constructor (props) {
@@ -68,8 +81,8 @@ class RideDetail extends ParseComponent {
           <View style={styles.stopsHeader}>
             <Text style={styles.stopsHeaderText}>2 stops in this ride</Text>
           </View>
-          <View style={styles.stop}>
-          </View>
+          <Stop time="10:30 am" location="Polk & Washington" />
+          <Stop time="10:45 am" location="301 Howard Street" />
         </ScrollView>
     </View>);
   }
@@ -169,6 +182,40 @@ var styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: '#333333',
+  },
+  stop: {
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    marginBottom: -1,
+    padding: 15,
+    paddingTop: 20,
+    paddingBottom: 20,
+    borderColor: '#dddddd',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  stopTime: {
+    fontFamily: 'Avenir',
+    fontSize: 13,
+    fontWeight: '300',
+    color: '#999999',
+    marginRight: 20,
+  },
+  stopContainer: {
+    flex: 1
+  },
+  stopLocation: {
+    fontFamily: 'Avenir',
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#335485',
+  },
+  stopRiders: {
+    fontFamily: 'Avenir',
+    fontSize: 13,
+    fontWeight: '400',
+    color: '#999999',
   },
 });
 

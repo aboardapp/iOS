@@ -203,8 +203,6 @@ var styles = StyleSheet.create({
       height: 1,
       width: 0
     },
-    borderBottomColor: '#DDDDDD',
-    borderBottomWidth: 1,
   },
   group: {
     backgroundColor: 'white',
