@@ -4,6 +4,7 @@ var t = require('tcomb-form-native');
 var ParseReact = require('parse-react');
 var Modal = require('react-native-modal');
 var Communications = require('react-native-communications');
+var moment = require('moment');
 
 var Button = require('../Button');
 
@@ -151,6 +152,10 @@ class RideDetail extends ParseComponent {
     }
   };
 
+  ridersForStop(stopId) {
+    console.log('ridersForStop', stopId, this.props.ride.stops_riders)
+  }
+
   render() {
     let ride = this.props.ride;
     let instance = this.props.instance;
@@ -166,6 +171,8 @@ class RideDetail extends ParseComponent {
 
     var pins = this._getPins(all_stops);
     var region = this._getRegion(all_stops);
+
+    if (stops.length) this.ridersForStop(stops[0].objectId);
 
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
@@ -183,7 +190,7 @@ class RideDetail extends ParseComponent {
             <View style={styles.header}>
               <View style={styles.headerInfo}>
                 <Text style={styles.name}>{ride.ride.name}</Text>
-                <Text style={styles.date}>Wednesday, June 30</Text>
+                <Text style={styles.date}>{moment(ride.date).format('dddd, LL')}</Text>
                 <Text style={styles.driverName}>Driver: {ride.ride.driver.name}</Text>
               </View>
               <View style={styles.headerSeats}>
