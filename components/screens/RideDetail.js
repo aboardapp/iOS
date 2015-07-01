@@ -207,11 +207,13 @@ class RideDetail extends ParseComponent {
 
     if (stops.length) this.ridersForStop(stops[0].objectId);
 
+    var currentRiders = this.state.modalStop && fullRiderStops[this.state.modalStop];
+    var currentStop = this.getStop(this.state.modalStop) || {};
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
-          <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
+          <Text style={styles.modalHeader}>{currentRiders.length} riders at <Text style={{fontWeight:'bold'}}>{currentStop.name}</Text> stop</Text>
           <View style={styles.riders}>
-            {this.state.modalStop && fullRiderStops[this.state.modalStop].map((rider)=>
+            {this.state.modalStop && currentRiders.map((rider)=>
               <Rider me={rider.objectId == this.props.user.id} name={rider.name} picture={rider.picture} phone={rider.phone}/>
             )}
           </View>
@@ -426,8 +428,6 @@ var styles = StyleSheet.create({
     marginTop: -1,
   },
   riders: {
-    borderTopWidth: 1,
-    borderTopColor: 'blue',
   },
   riderImage: {
     width: 36,
