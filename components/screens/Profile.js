@@ -135,13 +135,14 @@ class Profile extends React.Component {
         />
         {this.props.signup?<TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onSave.bind(this)}>
           <Text style={styles.signup}>Sign Up</Text>
-        </TouchableOpacity>:
-        <TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onLogout.bind(this)}>
-          <Text style={styles.logout}>LOGOUT</Text>
-        </TouchableOpacity>}
+        </TouchableOpacity>: null}
 
       </View>
     );
+        // <TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onLogout.bind(this)}>
+        //   <Text style={styles.logout}>LOGOUT</Text>
+        // </TouchableOpacity>
+
   }
 }
 
@@ -158,6 +159,9 @@ class ProfileScreen extends React.Component {
     console.log('change form', value, validated);
     this.userValue = value;
     this.validated = validated;
+  }
+
+  onLogout() {
   }
 
   onSave() {
@@ -197,6 +201,8 @@ class ProfileScreen extends React.Component {
     if (!signup) {
       route.rightButtonTitle = 'Save',
       route.onRightButtonPress = this.onSave.bind(this);
+      route.leftButtonTitle = 'Logout',
+      route.onLeftButtonPress = this.onLogout.bind(this);
     }
     return (
       <NavigatorIOS
@@ -222,10 +228,11 @@ var styles = StyleSheet.create({
     paddingTop: 64,
   },
   photo: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     borderWidth: 1,
+    borderColor: '#CCCCCC',
     marginBottom: 20,
     alignSelf: 'center',
 
@@ -233,8 +240,8 @@ var styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     shadowOffset: {
-      height: 1,
-      width: 0
+      height: 10,
+      width: 10
     },
 
   },

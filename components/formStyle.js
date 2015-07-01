@@ -68,6 +68,8 @@ var stylesheet = {
       fontSize: FONT_SIZE,
       height: 48,
       padding: 7,
+      paddingLeft: 15,
+      paddingRight: 15,
       backgroundColor: BACKGROUND_COLOR,
       borderColor: BORDER_COLOR,
       borderWidth: 1,
@@ -80,6 +82,8 @@ var stylesheet = {
       fontSize: FONT_SIZE,
       height: 48,
       padding: 7,
+      paddingLeft: 15,
+      paddingRight: 15,
       borderColor: ERROR_COLOR,
       borderWidth: 1,
       marginBottom: 5
