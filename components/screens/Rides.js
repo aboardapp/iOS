@@ -89,14 +89,41 @@ class MainRides extends React.Component {
   }
 
   _renderRides() {
-    return <Explore user={this.props.user} />;
+    return (
+      <NavigatorIOS
+        style={styles.container}
+        barTintColor="#335485"
+        titleTextColor="#FFFFFF"
+        tintColor="#FFFFFF"
+        itemWrapperStyle={styles.navContainer}
+        initialRoute={{
+          title: 'Rides',
+          component: Explore,
+          passProps: { user: this.props.user},
+        }}/>
+    );
   }
+
   _renderMyRides() {
-    return <Explore user={this.props.user} favorites={true} />;
+    return (
+      <NavigatorIOS
+        style={styles.container}
+        barTintColor="#335485"
+        titleTextColor="#FFFFFF"
+        tintColor="#FFFFFF"
+        itemWrapperStyle={styles.navContainer}
+        initialRoute={{
+          title: 'My Rides',
+          component: Explore,
+          passProps: { user: this.props.user, favorites: true},
+        }}/>
+    );
   }
+
   _renderProfile() {
     return (<Profile user={this.props.user} signup={false} />);
   }
+
   render() {
     return (
       <TabBarIOS
@@ -111,16 +138,7 @@ class MainRides extends React.Component {
               selectedTab: 'explore',
             });
           }}>
-          <NavigatorIOS
-            style={styles.container}
-            barTintColor="#335485"
-            titleTextColor="#FFFFFF"
-            tintColor="#FFFFFF"
-            itemWrapperStyle={styles.navContainer}
-            initialRoute={{
-              title: 'Rides',
-              component: Explore,
-            }}/>
+          {this._renderRides()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           systemIcon="favorites"
