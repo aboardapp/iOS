@@ -129,7 +129,6 @@ var styles = StyleSheet.create({
   scroll: {
     position: 'absolute',
     top: 0,
-    paddingTop: 240,
     flex: 1,
     bottom: -15,
     left: 0,
@@ -149,7 +148,7 @@ var styles = StyleSheet.create({
     color: '#999999',
   },
   scrollContent: {
-    flex: 1,
+    marginTop: 240,
     backgroundColor: '#FFFFFF',
     shadowOpacity: 0.15,
     shadowRadius: 4,
