@@ -60,7 +60,7 @@ class Stop extends React.Component {
             <Text style={styles.stopLocation}>{this.props.location}</Text>
             <Text style={styles.stopRiders}>{this.props.riders.length} riders to pickup</Text>
           </View>
-          <Button text="RESERVE" onPress={this.props.onReserve} />
+          {this.props.canReserve?<Button text="RESERVE" onPress={this.props.onReserve} />:null}
         </View>
       </TouchableOpacity>
     );
@@ -128,7 +128,20 @@ class RideDetail extends ParseComponent {
     return _.find(this.data.stops, (stop) => stop.objectId == stopId);
   }
 
+  canReserve(stopId) {
+    return !_.find(this.data.riders, (rider) => rider.objectId == this.props.user.id);
+  }
+
   doReserve(stop) {
+      this.props.instance.relation('riders').add(this.props.user);
+      stops_riders = _.clone(this.props.ride);
+      stops_riders[stop] = stops_riders[stop] || [];
+      stops_riders[stop].push(this.props.user.objectId);
+      this.props.instance.set('stops_riders', stops_riders);
+
+      this.props.instance.save(null, () =>
+        this.refreshQueries()
+      );
       AlertIOS.alert(
         'Aboard',
         `Your reservation in ${this.getStop(stop).name} was successful`,
@@ -168,12 +181,13 @@ class RideDetail extends ParseComponent {
     ));
 
     if (stops.length) this.ridersForStop(stops[0].objectId);
+
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
           <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
           <View style={styles.riders}>
             {this.state.modalStop && fullRiderStops[this.state.modalStop].map((rider)=>
-              <Rider me={rider.objectId == this.props.user.objectId} name={rider.name} picture={rider.picture} phone={rider.phone}/>
+              <Rider me={rider.objectId == this.props.user.id} name={rider.name} picture={rider.picture} phone={rider.phone}/>
             )}
           </View>
         </Modal>
@@ -188,7 +202,7 @@ class RideDetail extends ParseComponent {
                 <Text style={styles.driverName}>Driver: {ride.ride.driver.name}</Text>
               </View>
               <View style={styles.headerSeats}>
-                <Text style={styles.numSeats}>{ride.ride.seats}</Text>
+                <Text style={styles.numSeats}>{ride.ride.seats - this.data.riders.length}</Text>
                 <Text style={styles.numSeatsLeft}>Seats left</Text>
               </View>
           </View>
@@ -196,7 +210,7 @@ class RideDetail extends ParseComponent {
             <Text style={styles.stopsHeaderText}>{this.data.stops.length-1} stops in this ride</Text>
           </View>
           {stops.map((stop) =>
-            <Stop time={stop.time} location={stop.name} riders={fullRiderStops[stop.objectId]} onViewDetails={() => this.openModal(stop.objectId)} onReserve={() => this.doReserve(stop.objectId)} />
+            <Stop time={stop.time} canReserve={this.canReserve()} location={stop.name} riders={fullRiderStops[stop.objectId]} onViewDetails={() => this.openModal(stop.objectId)} onReserve={() => this.doReserve(stop.objectId)} />
           )}
           <View style={styles.finalStop}>
             <Image style={styles.finalStopIcon} source={require('image!location-icon')} />
