@@ -138,7 +138,7 @@ var styles = StyleSheet.create({
     // flex: 1,
     // height: 240,
     position: 'absolute',
-    top: -200,
+    top: -160,
     left: 0,
     right: 0,
     height: 600,

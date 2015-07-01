@@ -56,14 +56,18 @@ var styles = StyleSheet.create({
   },
   cellImage: {
     backgroundColor: '#dddddd',
-    height: 80,
+    width: 72,
+    height: 72,
     marginRight: 10,
-    width: 80,
+    // height: 60,
+    // margin: 10,
+    // width: 60,
+    // borderRadius: 30,
   },
   rideName: {
     fontFamily: 'Avenir',
-    fontWeight: '600',
-    fontSize: 15,
+    fontWeight: '700',
+    fontSize: 16,
     color: '#335485',
   },
   stops: {
