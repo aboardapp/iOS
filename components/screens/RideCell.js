@@ -52,7 +52,7 @@ var styles = StyleSheet.create({
     borderRightWidth: 0,
     borderLeftWidth: 0,
     marginTop: -1,
-    borderColor: '#CCCCCC',
+    borderColor: '#dddddd',
   },
   cellImage: {
     backgroundColor: '#dddddd',
@@ -62,13 +62,13 @@ var styles = StyleSheet.create({
   },
   rideName: {
     fontFamily: 'Avenir',
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 15,
     color: '#335485',
   },
   stops: {
     fontFamily: 'Avenir',
-    fontWeight: '300',
+    fontWeight: '500',
     fontSize: 13,
     color: '#999999',
 

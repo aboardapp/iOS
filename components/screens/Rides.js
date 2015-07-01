@@ -196,6 +196,15 @@ var styles = StyleSheet.create({
   sectionHeader: {
     padding: 5,
     backgroundColor: '#EEEEEE',
+    shadowColor: "#000000",
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    borderBottomColor: '#DDDDDD',
+    borderBottomWidth: 1,
   },
   group: {
     backgroundColor: 'white',
