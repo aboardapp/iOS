@@ -142,7 +142,12 @@ class RideDetail extends ParseComponent {
   }
 
   ridersForStop(stopId) {
-    console.log('ridersForStop', stopId, this.props.ride.stops_riders)
+    var riderStops = this.props.ride.stops_riders[stopId] || [];
+    return riderStops.map(this.getRider.bind(this));
+  }
+
+  getRider(riderId) {
+    return _.find(this.data.riders, (rider) => rider.objectId == riderId);
   }
 
   render() {
@@ -157,13 +162,19 @@ class RideDetail extends ParseComponent {
     all_stops.sort((a,b) => convert_to_24h(a.time) > convert_to_24h(b.time));
     var stops = all_stops.slice(0,-1);
     var final_stop = all_stops.length?all_stops[all_stops.length-1]:{};
+
+    var fullRiderStops = _.object(_.map(all_stops, (value) =>
+      [value.objectId, this.ridersForStop(value.objectId)]
+    ));
+
     if (stops.length) this.ridersForStop(stops[0].objectId);
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
           <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>
           <View style={styles.riders}>
-            <Rider me={true} name={this.props.user.get('name')} picture={this.props.user.get('picture')} phone={this.props.user.get('phone')}/>
-            <Rider me={false} name={this.props.user.get('name')} picture={this.props.user.get('picture')} phone={this.props.user.get('phone')}/>
+            {this.state.modalStop && fullRiderStops[this.state.modalStop].map((rider)=>
+              <Rider me={rider.objectId == this.props.user.objectId} name={rider.name} picture={rider.picture} phone={rider.phone}/>
+            )}
           </View>
         </Modal>
         <MapView
@@ -185,7 +196,7 @@ class RideDetail extends ParseComponent {
             <Text style={styles.stopsHeaderText}>{this.data.stops.length-1} stops in this ride</Text>
           </View>
           {stops.map((stop) =>
-            <Stop time={stop.time} location={stop.name} riders={[]} onViewDetails={() => this.openModal(stop.objectId)} onReserve={() => this.doReserve(stop.objectId)} />
+            <Stop time={stop.time} location={stop.name} riders={fullRiderStops[stop.objectId]} onViewDetails={() => this.openModal(stop.objectId)} onReserve={() => this.doReserve(stop.objectId)} />
           )}
           <View style={styles.finalStop}>
             <Image style={styles.finalStopIcon} source={require('image!location-icon')} />
