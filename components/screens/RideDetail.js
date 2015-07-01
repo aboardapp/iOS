@@ -163,6 +163,28 @@ class RideDetail extends ParseComponent {
     return _.find(this.data.riders, (rider) => rider.objectId == riderId);
   }
 
+  _getPins(stops) {
+    var pins = [];
+    stops.forEach(function(stop) {
+      pins.push({
+        latitude: stop.geopoint.latitude,
+        longitude: stop.geopoint.longitude,
+        title: stop.name,
+        subtitle: stop.time
+      });
+    });
+    return pins;
+  }
+
+  _getRegion(stops) {
+    return {
+      latitude: 37.7833,
+      longitude: -122.4167,
+      latitudeDelta: .1,
+      longitudeDelta: .1,
+    }
+  };
+
   render() {
     let ride = this.props.ride;
     let instance = this.props.instance;
@@ -180,6 +202,9 @@ class RideDetail extends ParseComponent {
       [value.objectId, this.ridersForStop(value.objectId)]
     ));
 
+    var pins = this._getPins(all_stops);
+    var region = this._getRegion(all_stops);
+
     if (stops.length) this.ridersForStop(stops[0].objectId);
 
     return (<View style={styles.tabContent}>
@@ -193,7 +218,8 @@ class RideDetail extends ParseComponent {
         </Modal>
         <MapView
           style={styles.map}
-          region={region} />
+          region={region}
+          annotations={pins} />
           <ScrollView style={styles.scroll} automaticallyAdjustContentInsets={false} contentContainerStyle={styles.scrollContent}>
             <View style={styles.header}>
               <View style={styles.headerInfo}>
