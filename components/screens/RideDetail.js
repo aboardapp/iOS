@@ -136,6 +136,10 @@ class RideDetail extends ParseComponent {
       );
   }
 
+  ridersForStop(stopId) {
+    console.log('ridersForStop', stopId, this.props.ride.stops_riders)
+  }
+
   render() {
     let ride = this.props.ride;
     let instance = this.props.instance;
@@ -148,7 +152,7 @@ class RideDetail extends ParseComponent {
     all_stops.sort((a,b) => convert_to_24h(a.time) > convert_to_24h(b.time));
     var stops = all_stops.slice(0,-1);
     var final_stop = all_stops.length?all_stops[all_stops.length-1]:{};
-
+    if (stops.length) this.ridersForStop(stops[0].objectId);
     return (<View style={styles.tabContent}>
         <Modal isVisible={!!this.state.modalStop} onPressBackdrop={() => this.closeModal()} forceToFront={true} backdropType="blur" backdropBlur="dark">
           <Text style={styles.modalHeader}>3 riders at <Text style={{fontWeight:'bold'}}>Polk & Broadway</Text> stop</Text>

@@ -2,6 +2,8 @@ var React = require('react-native');
 var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
 var RefreshableListView = require('react-native-refreshable-listview')
+var _ = require('underscore');
+var moment = require('moment');
 
 var RideCell = require('./RideCell');
 var Profile = require('./Profile');
@@ -70,7 +72,8 @@ class Explore extends ParseComponent {
         'As a driver': this.data.driving
       });
     }
-    return this.ds.cloneWithRowsAndSections({today:this.data.items});
+    var grouped_items = _.groupBy(this.data.items, (item) => moment(moment(item.date).startOf('day').format('LL')).calendar().split(' ')[0]);
+    return this.ds.cloneWithRowsAndSections(grouped_items);
   }
   renderRow(rowData) {
     var ride = getInstanceForModelRide({id:rowData.ride.objectId});
