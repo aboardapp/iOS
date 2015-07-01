@@ -5,6 +5,7 @@ var ParseReact = require('parse-react');
 var Modal = require('react-native-modal');
 var Communications = require('react-native-communications');
 var moment = require('moment');
+var _ = require('underscore');
 
 var Button = require('../Button');
 
@@ -123,11 +124,14 @@ class RideDetail extends ParseComponent {
   //   // ParseReact.Mutation.AddRelation(ride, 'riders', this.props.user.id).dispatch();
   //   // this.refreshQueries();
   // }
+  getStop(stopId) {
+    return _.find(this.data.stops, (stop) => stop.objectId == stopId);
+  }
 
   doReserve(stop) {
       AlertIOS.alert(
         'Aboard',
-        `Your reservation in ${stop} was successful`,
+        `Your reservation in ${this.getStop(stop).name} was successful`,
         [
           {
             text: 'OK',
