@@ -1,6 +1,6 @@
 var React = require('react-native');
 
-var FBLogin = require('react-native-facebook-login');
+var FBLogin = require('../fblogin');
 var {FBLoginManager} = require('NativeModules');
 var {Parse} = require('parse');
 var ParseReact = require('parse-react');
@@ -15,12 +15,13 @@ var {
   View,
   ListView,
   PushNotificationIOS,
-  AlertIOS
+  AlertIOS,
+  Image
 } = React;
-
 
 class Login extends React.Component {
   handleLogin(data) {
+    console.log(data);
     var {credentials} = data;
     console.log(credentials);
     this.setState({ user : data.credentials });
@@ -53,7 +54,7 @@ class Login extends React.Component {
   render () {
     var _this = this;
     return (
-      <FBLogin style={{ marginBottom: 10, }}
+      <FBLogin style={styles.fblogin}
         permissions={["email","user_friends"]}
         onLogin={this.handleLogin.bind(this)}
         onLogout={function(){
@@ -93,15 +94,9 @@ class LoginScreen extends React.Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
+        <Image style={styles.logo} source={require('image!logo')} />
+        <Text style={styles.tagline}>
+          An easier commute
         </Text>
         <Login onLogin={this.onLogin.bind(this)} />
       </View>
@@ -114,12 +109,33 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#3A629D',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  fblogin: {
+    marginBottom: 10,
+    // width: 240,
+    // height: 64,
+    // textAlign: 'center',
+    // borderColor: '#5273B9',
+    // borderWidth: 1,
+    // backgroundColor: '#4866B9',
+    // borderRadius: 3,
+  },
+  logo: {
+    marginBottom: 15,
+  },
+  tagline: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontFamily: 'Avenir',
+    fontWeight: '700',
+    fontSize: 18,
+    marginBottom: 54
   },
   instructions: {
     textAlign: 'right',

@@ -58,7 +58,7 @@ class Profile extends React.Component {
   preloadImage(user) {
     var {access_token, id} = user.get('authData').facebook;
 
-    var photo_api = `https://graph.facebook.com/v2.3/${id}/picture?width=100&redirect=false&access_token=${access_token}`;
+    var photo_api = `https://graph.facebook.com/v2.3/${id}/picture?width=240&redirect=false&access_token=${access_token}`;
     var _this = this;
     fetch(photo_api)
       .then((response) => response.json())
@@ -70,6 +70,7 @@ class Profile extends React.Component {
             width: responseData.data.width,
           },
         });
+        this.props.user.set("picture", responseData.data.url);
       })
       .done();
 
@@ -101,6 +102,10 @@ class Profile extends React.Component {
     this.props.onSave && this.props.onSave();
   }
 
+  onLogout() {
+
+  }
+
   componentDidMount() {
     this.refreshValue();
   }
@@ -128,7 +133,11 @@ class Profile extends React.Component {
         />
         {this.props.signup?<TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onSave.bind(this)}>
           <Text style={styles.signup}>Sign Up</Text>
-        </TouchableOpacity>:null}
+        </TouchableOpacity>:
+        <TouchableOpacity style={{textAlign:'center', flex: 1}} onPress={this.onLogout.bind(this)}>
+          <Text style={styles.logout}>Logout</Text>
+        </TouchableOpacity>}
+
       </View>
     );
   }
@@ -179,7 +188,7 @@ class ProfileScreen extends React.Component {
   render () {
     let signup = !!this.props.signup;
     var route = {
-      title: 'Sign Up',
+      title: signup?'Sign Up':'Your profile',
       component: Profile,
       passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this), onSave: this.onSave.bind(this), signup: signup }
     }
@@ -211,13 +220,21 @@ var styles = StyleSheet.create({
     paddingTop: 64,
   },
   photo: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderColor: '#335485',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     borderWidth: 1,
-    marginBottom: 10,
+    marginBottom: 20,
     alignSelf: 'center',
+
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+
   },
   container2: {
     flex: 1,
@@ -235,6 +252,22 @@ var styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#335485',
     width: 180,
+    borderRadius: 3,
+    textAlign: 'center',
+    fontWeight: '500',
+    alignSelf: 'center',
+  },
+  logout: {
+    fontFamily: 'Avenir',
+    fontSize: 14,
+    color: '#335485',
+    padding: 9,
+    marginTop: 13,
+    paddingBottom: 2,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 2,
+    borderColor: '#335485',
+    width: 100,
     borderRadius: 3,
     textAlign: 'center',
     fontWeight: '500',
