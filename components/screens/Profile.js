@@ -194,7 +194,7 @@ class ProfileScreen extends React.Component {
   render () {
     let signup = !!this.props.signup;
     var route = {
-      title: signup?'Sign Up':'Your profile',
+      title: signup?'Sign Up':'My profile',
       component: Profile,
       passProps: { user: this.props.user, onChange:this.onChangeForm.bind(this), onSave: this.onSave.bind(this), signup: signup }
     }
@@ -207,7 +207,7 @@ class ProfileScreen extends React.Component {
     return (
       <NavigatorIOS
         ref="nav"
-        barTintColor="#335485"
+        barTintColor="#3A629D"
         titleTextColor="#FFFFFF"
         tintColor="#FFFFFF"
         style={styles.container}

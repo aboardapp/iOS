@@ -108,7 +108,7 @@ class MainRides extends React.Component {
     return (
       <NavigatorIOS
         style={styles.container}
-        barTintColor="#335485"
+        barTintColor="#3A629D"
         titleTextColor="#FFFFFF"
         tintColor="#FFFFFF"
         itemWrapperStyle={styles.navContainer}
@@ -124,7 +124,7 @@ class MainRides extends React.Component {
     return (
       <NavigatorIOS
         style={styles.container}
-        barTintColor="#335485"
+        barTintColor="#3A629D"
         titleTextColor="#FFFFFF"
         tintColor="#FFFFFF"
         itemWrapperStyle={styles.navContainer}
