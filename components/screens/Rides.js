@@ -1,7 +1,6 @@
 var React = require('react-native');
 var ParseComponent = require('parse-react/class')
 var t = require('tcomb-form-native');
-var RefreshableListView = require('react-native-refreshable-listview')
 var _ = require('underscore');
 var moment = require('moment');
 
