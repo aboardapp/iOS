@@ -8,6 +8,10 @@ var moment = require('moment');
 var RideCell = require('./RideCell');
 var Profile = require('./Profile');
 var RideDetail = require('./RideDetail');
+var {
+  RefresherListView
+} = require('react-native-refresher');
+
 
 var getInstanceForModel = function (model) {
   var CommissionedRide = Parse.Object.extend('CommissionedRide');
@@ -80,13 +84,12 @@ class Explore extends ParseComponent {
     var instance = getInstanceForModel({id:rowData.objectId, ride: ride});
     return <RideCell model={rowData} instance={instance} onSelect={() => this.selectRide(rowData, instance)} />
   }
-
   render() {
     return (
-      <RefreshableListView
+      <RefresherListView
         dataSource={this._getDataSource()}
         style={{marginBottom:64}}
-        loadData={() => this.refreshQueries()}
+        onRefresh={() => this.refreshQueries()}
         refreshDescription="Refreshing"
         renderSectionHeader={this._renderSectionHeader}
         renderRow={this.renderRow.bind(this)}
